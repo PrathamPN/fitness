@@ -1,0 +1,161 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fitness Coach (Vue.js)</title>
+
+    <link rel="manifest" href="data:application/json,{
+        &quot;name&quot;: &quot;AI Fitness Coach&quot;,
+        &quot;short_name&quot;: &quot;Fitness&quot;,
+        &quot;start_url&quot;: &quot;.&quot;,
+        &quot;display&quot;: &quot;standalone&quot;,
+        &quot;background_color&quot;: &quot;#111827&quot;,
+        &quot;theme_color&quot;: &quot;#111827&quot;,
+        &quot;description&quot;: &quot;Your personal AI fitness coach.&quot;,
+        &quot;icons&quot;: [
+            { &quot;src&quot;: &quot;https://placehold.co/192x192/0EA5E9/FFFFFF?text=AI&quot;, &quot;sizes&quot;: &quot;192x192&quot;, &quot;type&quot;: &quot;image/png&quot; },
+            { &quot;src&quot;: &quot;https://placehold.co/512x512/0EA5E9/FFFFFF?text=AI&quot;, &quot;sizes&quot;: &quot;512x512&quot;, &quot;type&quot;: &quot;image/png&quot; }
+        ]
+    }">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+  <script type="module" crossorigin src="/assets/index-r1Ib0UI1.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-NIF11XMm.css">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="app" class="w-full max-w-4xl mx-auto" v-cloak>
+        <h1 class="text-3xl md:text-5xl font-bold text-center text-sky-400 mb-6">
+            AI Fitness Coach
+        </h1>
+
+        <div class="flex justify-center space-x-4 mb-4">
+            <button @click="selectExercise('SQUAT')" :class="currentExercise === 'SQUAT' ? 'bg-sky-600' : 'bg-gray-700'"
+                class="px-6 py-3 rounded-lg text-xl font-semibold shadow-lg transition-all duration-200">
+                Squats
+            </button>
+            <button @click="selectExercise('BICEP_CURL')"
+                :class="currentExercise === 'BICEP_CURL' ? 'bg-sky-600' : 'bg-gray-700'"
+                class="px-6 py-3 rounded-lg text-xl font-semibold shadow-lg transition-all duration-200">
+                Bicep Curls
+            </button>
+        </div>
+
+        <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-700"
+            style="padding-top: 56.25%;">
+            <video id="input-video" class="absolute top-0 left-0 w-full h-full"></video>
+
+            <canvas id="output-canvas" class="absolute top-0 left-0 w-full h-full transform -scale-x-100"></canvas>
+
+            <div v-if="loading"
+                class="absolute inset-0 bg-gray-900 bg-opacity-80 flex flex-col justify-center items-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-sky-400"></div>
+                <p class="text-xl text-white mt-4">{{ loadingMessage }}</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div v-if="feedback"
+                class="md:col-span-1 bg-red-600 p-6 rounded-2xl flex items-center justify-center min-h-[150px] shadow-lg">
+                <p class="text-3xl font-bold text-center text-white">{{ feedback }}</p>
+            </div>
+            <div v-else class="md:col-span-1 min-h-[150px]"></div>
+
+            <div class="bg-gray-800 p-6 rounded-2xl flex flex-col items-center justify-center min-h-[150px] shadow-lg">
+                <p class="text-8xl font-bold text-sky-400">{{ repCounter }}</p>
+                <p class="text-2xl font-semibold text-gray-400">REPS</p>
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-2xl flex flex-col items-center justify-center min-h-[150px] shadow-lg">
+                <p class="text-7xl font-bold text-white">{{ stage }}</p>
+                <p class="text-2xl font-semibold text-gray-400">STAGE</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fitness Coach (Vue.js)</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+
+    <!-- Vue is now loaded from npm via Vite -->
+
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center flex-col p-4">
+
+    <div id="app" class="flex items-center justify-center flex-col">
+
+        <h1 class="text-4xl font-bold mb-4 text-blue-300">AI Fitness Coach</h1>
+
+        <div class="mb-4 flex space-x-4">
+            <button @click="selectExercise('SQUAT')" :class="squatBtnClass">
+                Squats
+            </button>
+            <button @click="selectExercise('BICEP_CURL')" :class="curlBtnClass">
+                Bicep Curls
+            </button>
+        </div>
+
+        <p id="instructions" class="mb-4 text-gray-400">{{ instructionsText }}</p>
+
+        <div class="container bg-gray-700 shadow-2xl rounded-lg">
+            <video id="webcam" ref="videoEl" autoplay playsinline></video>
+
+            <canvas id="output-canvas" ref="canvasEl" width="1280" height="720"></canvas>
+
+            <div v-if="isLoading" id="loading" class="loading-spinner"></div>
+
+            <div id="feedback-ui" class="absolute bottom-4 left-4 right-4 flex justify-between z-10 p-4">
+                <div class="bg-black bg-opacity-50 p-6 rounded-lg shadow-xl">
+                    <div class="text-6xl font-bold text-white" id="rep-counter">{{ repCounter }}</div>
+                    <div class="text-2xl text-gray-300">REPS</div>
+                </div>
+
+                <div v-show="feedbackMessage" id="feedback-box"
+                    class="bg-red-500 text-white p-6 rounded-lg shadow-xl text-3xl font-bold items-center justify-center flex">
+                    {{ feedbackMessage }}
+                </div>
+
+                <div class="bg-black bg-opacity-50 p-6 rounded-lg shadow-xl">
+                    <div class="text-6xl font-bold text-white" id="stage-display">{{ stage }}</div>
+                    <div class="text-2xl text-gray-300">STAGE</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

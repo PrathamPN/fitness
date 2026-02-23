@@ -1,105 +1,17 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Fitness Coach (Vue.js)</title>
-
-    <link rel="manifest" href="data:application/json,{
-        &quot;name&quot;: &quot;AI Fitness Coach&quot;,
-        &quot;short_name&quot;: &quot;Fitness&quot;,
-        &quot;start_url&quot;: &quot;.&quot;,
-        &quot;display&quot;: &quot;standalone&quot;,
-        &quot;background_color&quot;: &quot;#111827&quot;,
-        &quot;theme_color&quot;: &quot;#111827&quot;,
-        &quot;description&quot;: &quot;Your personal AI fitness coach.&quot;,
-        &quot;icons&quot;: [
-            { &quot;src&quot;: &quot;https://placehold.co/192x192/0EA5E9/FFFFFF?text=AI&quot;, &quot;sizes&quot;: &quot;192x192&quot;, &quot;type&quot;: &quot;image/png&quot; },
-            { &quot;src&quot;: &quot;https://placehold.co/512x512/0EA5E9/FFFFFF?text=AI&quot;, &quot;sizes&quot;: &quot;512x512&quot;, &quot;type&quot;: &quot;image/png&quot; }
-        ]
-    }">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"
-        crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-    <link rel="stylesheet" href="style.css">
-
-</head>
-
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
-
-    <div id="app" class="w-full max-w-4xl mx-auto" v-cloak>
-        <h1 class="text-3xl md:text-5xl font-bold text-center text-sky-400 mb-6">
-            AI Fitness Coach
-        </h1>
-
-        <div class="flex justify-center space-x-4 mb-4">
-            <button @click="selectExercise('SQUAT')" :class="currentExercise === 'SQUAT' ? 'bg-sky-600' : 'bg-gray-700'"
-                class="px-6 py-3 rounded-lg text-xl font-semibold shadow-lg transition-all duration-200">
-                Squats
-            </button>
-            <button @click="selectExercise('BICEP_CURL')"
-                :class="currentExercise === 'BICEP_CURL' ? 'bg-sky-600' : 'bg-gray-700'"
-                class="px-6 py-3 rounded-lg text-xl font-semibold shadow-lg transition-all duration-200">
-                Bicep Curls
-            </button>
-        </div>
-
-        <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-700"
-            style="padding-top: 56.25%;">
-            <video id="input-video" class="absolute top-0 left-0 w-full h-full"></video>
-
-            <canvas id="output-canvas" class="absolute top-0 left-0 w-full h-full transform -scale-x-100"></canvas>
-
-            <div v-if="loading"
-                class="absolute inset-0 bg-gray-900 bg-opacity-80 flex flex-col justify-center items-center">
-                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-sky-400"></div>
-                <p class="text-xl text-white mt-4">{{ loadingMessage }}</p>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <div v-if="feedback"
-                class="md:col-span-1 bg-red-600 p-6 rounded-2xl flex items-center justify-center min-h-[150px] shadow-lg">
-                <p class="text-3xl font-bold text-center text-white">{{ feedback }}</p>
-            </div>
-            <div v-else class="md:col-span-1 min-h-[150px]"></div>
-
-            <div class="bg-gray-800 p-6 rounded-2xl flex flex-col items-center justify-center min-h-[150px] shadow-lg">
-                <p class="text-8xl font-bold text-sky-400">{{ repCounter }}</p>
-                <p class="text-2xl font-semibold text-gray-400">REPS</p>
-            </div>
-
-            <div class="bg-gray-800 p-6 rounded-2xl flex flex-col items-center justify-center min-h-[150px] shadow-lg">
-                <p class="text-7xl font-bold text-white">{{ stage }}</p>
-                <p class="text-2xl font-semibold text-gray-400">STAGE</p>
-            </div>
-        </div>
-    </div>
-
-    <script type="module" src="main.js"></script>
-</body>
-
-</html> -->
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Fitness Coach (Vue.js)</title>
+    <title>AI Fitness Coach</title>
+    <meta name="description"
+        content="Your personal AI-powered fitness coach with 20 exercises, pose detection, and workout tracking.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-
+    <!-- MediaPipe CDN (WASM-based, stays as CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
         crossorigin="anonymous"></script>
@@ -107,55 +19,335 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
 
+    <!-- Vue 3 CDN (full build with template compiler) -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
-<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center flex-col p-4">
+<body>
+    <div id="app" v-cloak>
 
-    <div id="app" class="flex items-center justify-center flex-col">
+        <!-- ============================================ -->
+        <!-- LOGIN PAGE                                    -->
+        <!-- ============================================ -->
+        <div v-if="currentPage === 'login'" class="login-page">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="login-icon">🏋️</div>
+                    <h1>AI Fitness Coach</h1>
+                    <p class="login-subtitle">Your personal AI-powered trainer</p>
+                </div>
 
-        <h1 class="text-4xl font-bold mb-4 text-blue-300">AI Fitness Coach</h1>
+                <div class="login-form">
+                    <div class="login-tabs">
+                        <button @click="authMode = 'login'" :class="{ active: authMode === 'login' }">Login</button>
+                        <button @click="authMode = 'signup'" :class="{ active: authMode === 'signup' }">Sign Up</button>
+                    </div>
 
-        <div class="mb-4 flex space-x-4">
-            <button @click="selectExercise('SQUAT')" :class="squatBtnClass">
-                Squats
-            </button>
-            <button @click="selectExercise('BICEP_CURL')" :class="curlBtnClass">
-                Bicep Curls
-            </button>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" v-model="authUsername" placeholder="Enter username" @keyup.enter="handleAuth"
+                            id="username-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" v-model="authPassword" placeholder="Enter password"
+                            @keyup.enter="handleAuth" id="password-input">
+                    </div>
+
+                    <div v-if="authError" class="auth-error">{{ authError }}</div>
+
+                    <button @click="handleAuth" class="auth-btn" id="auth-submit">
+                        {{ authMode === 'login' ? 'Login' : 'Create Account' }}
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <p id="instructions" class="mb-4 text-gray-400">{{ instructionsText }}</p>
+        <!-- ============================================ -->
+        <!-- DASHBOARD PAGE                                -->
+        <!-- ============================================ -->
+        <div v-if="currentPage === 'dashboard'" class="dashboard-page">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <span class="app-logo">🏋️</span>
+                    <span class="app-name">AI Fitness Coach</span>
+                </div>
+                <div class="top-bar-right">
+                    <span class="user-greeting">Hey, <strong>{{ currentUser }}</strong></span>
+                    <button @click="handleLogout" class="logout-btn" id="logout-btn">Logout</button>
+                </div>
+            </div>
 
-        <div class="container bg-gray-700 shadow-2xl rounded-lg">
-            <video id="webcam" ref="videoEl" autoplay playsinline></video>
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button @click="dashboardTab = 'exercises'" :class="{ active: dashboardTab === 'exercises' }"
+                    class="nav-tab">🏋️ Exercises</button>
+                <button @click="dashboardTab = 'profile'" :class="{ active: dashboardTab === 'profile' }"
+                    class="nav-tab">👤 Profile</button>
+                <button @click="dashboardTab = 'leaderboard'; refreshLeaderboard()"
+                    :class="{ active: dashboardTab === 'leaderboard' }" class="nav-tab">🏆 Leaderboard</button>
+            </div>
 
-            <canvas id="output-canvas" ref="canvasEl" width="1280" height="720"></canvas>
-
-            <div v-if="isLoading" id="loading" class="loading-spinner"></div>
-
-            <div id="feedback-ui" class="absolute bottom-4 left-4 right-4 flex justify-between z-10 p-4">
-                <div class="bg-black bg-opacity-50 p-6 rounded-lg shadow-xl">
-                    <div class="text-6xl font-bold text-white" id="rep-counter">{{ repCounter }}</div>
-                    <div class="text-2xl text-gray-300">REPS</div>
+            <!-- ========== EXERCISES TAB ========== -->
+            <div v-if="dashboardTab === 'exercises'">
+                <!-- Today's Stats -->
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-value">{{ todayStats.totalExercises }}</div>
+                        <div class="stat-label">Workouts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ todayStats.totalReps }}</div>
+                        <div class="stat-label">Total Reps</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ formatDuration(todayStats.totalDuration) }}</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
                 </div>
 
-                <div v-show="feedbackMessage" id="feedback-box"
-                    class="bg-red-500 text-white p-6 rounded-lg shadow-xl text-3xl font-bold items-center justify-center flex">
-                    {{ feedbackMessage }}
+                <!-- Category Filter -->
+                <div class="category-filter">
+                    <button @click="selectedCategory = 'ALL'" :class="{ active: selectedCategory === 'ALL' }"
+                        class="cat-btn">All</button>
+                    <button v-for="(cat, key) in categories" :key="key" @click="selectedCategory = key"
+                        :class="{ active: selectedCategory === key }" class="cat-btn"
+                        :style="selectedCategory === key ? { background: cat.color } : {}">
+                        {{ cat.icon }} {{ cat.label }}
+                    </button>
                 </div>
 
-                <div class="bg-black bg-opacity-50 p-6 rounded-lg shadow-xl">
-                    <div class="text-6xl font-bold text-white" id="stage-display">{{ stage }}</div>
-                    <div class="text-2xl text-gray-300">STAGE</div>
+                <!-- Exercise Grid -->
+                <div class="exercise-grid">
+                    <div v-for="ex in filteredExercises" :key="ex.id" class="exercise-card"
+                        @click="startExercise(ex.id)" :style="{ '--accent': getCategoryColor(ex.category) }">
+                        <div class="exercise-icon">{{ ex.icon }}</div>
+                        <div class="exercise-info">
+                            <h3>{{ ex.name }}</h3>
+                            <p>{{ ex.description }}</p>
+                        </div>
+                        <div class="exercise-badge" :style="{ background: getCategoryColor(ex.category) }">
+                            {{ getCategoryLabel(ex.category) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Workouts -->
+                <div v-if="recentWorkouts.length > 0" class="recent-section">
+                    <h2>Recent Workouts</h2>
+                    <div class="recent-list">
+                        <div v-for="(w, i) in recentWorkouts" :key="i" class="recent-item">
+                            <span class="recent-name">{{ w.exerciseName }}</span>
+                            <span class="recent-reps">{{ w.reps }} reps</span>
+                            <span class="recent-date">{{ formatDate(w.date) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== PROFILE TAB ========== -->
+            <div v-if="dashboardTab === 'profile'">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-avatar">{{ currentUser?.charAt(0)?.toUpperCase() }}</div>
+                    <div class="profile-info">
+                        <h2>{{ currentUser }}</h2>
+                        <p class="profile-since">Member since {{ profileStats.memberSince || 'today' }}</p>
+                    </div>
+                </div>
+
+                <!-- All-time Stats -->
+                <div class="stats-bar stats-bar-5">
+                    <div class="stat-card">
+                        <div class="stat-value">{{ profileStats.totalWorkouts }}</div>
+                        <div class="stat-label">Workouts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ profileStats.totalReps }}</div>
+                        <div class="stat-label">Total Reps</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ profileStats.streak }}🔥</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ profileStats.uniqueExercises }}</div>
+                        <div class="stat-label">Exercises Tried</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ formatDuration(profileStats.totalDuration) }}</div>
+                        <div class="stat-label">Total Time</div>
+                    </div>
+                </div>
+
+                <!-- Extra Stats Row -->
+                <div class="profile-extra-stats">
+                    <div class="extra-stat" v-if="profileStats.favoriteExercise">
+                        <span class="extra-label">Favorite Exercise</span>
+                        <span class="extra-value">{{ profileStats.favoriteExercise }}</span>
+                    </div>
+                    <div class="extra-stat">
+                        <span class="extra-label">Avg Reps/Workout</span>
+                        <span class="extra-value">{{ profileStats.avgRepsPerWorkout }}</span>
+                    </div>
+                    <div class="extra-stat">
+                        <span class="extra-label">Active Days</span>
+                        <span class="extra-value">{{ profileStats.activeDays }}</span>
+                    </div>
+                </div>
+
+                <!-- Milestones -->
+                <h2 class="section-title">🏅 Milestones <span class="milestone-count">{{ unlockedCount }}/{{
+                        totalMilestones }}</span></h2>
+                <div class="milestone-grid">
+                    <div v-for="m in milestoneProgress" :key="m.id" class="milestone-card"
+                        :class="{ unlocked: m.unlocked, locked: !m.unlocked }">
+                        <div class="milestone-icon">{{ m.unlocked ? m.icon : '🔒' }}</div>
+                        <div class="milestone-info">
+                            <h4>{{ m.name }}</h4>
+                            <p>{{ m.description }}</p>
+                        </div>
+                        <div v-if="m.unlocked" class="milestone-check">✅</div>
+                    </div>
+                </div>
+
+                <!-- Workout History -->
+                <div v-if="recentWorkouts.length > 0" class="recent-section">
+                    <h2>Workout History</h2>
+                    <div class="recent-list">
+                        <div v-for="(w, i) in allWorkouts" :key="i" class="recent-item">
+                            <span class="recent-name">{{ w.exerciseName }}</span>
+                            <span class="recent-reps">{{ w.reps }} reps</span>
+                            <span class="recent-duration">{{ formatDuration(w.duration) }}</span>
+                            <span class="recent-date">{{ formatDate(w.date) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== LEADERBOARD TAB ========== -->
+            <div v-if="dashboardTab === 'leaderboard'">
+                <div class="leaderboard-header">
+                    <h2>🏆 Leaderboard</h2>
+                    <p class="leaderboard-subtitle">Rankings based on reps, workouts, streaks & milestones</p>
+                </div>
+
+                <div v-if="leaderboardData.length === 0" class="leaderboard-empty">
+                    <p>No users yet. Start working out to appear on the leaderboard!</p>
+                </div>
+
+                <div class="leaderboard-list">
+                    <div v-for="(user, index) in leaderboardData" :key="user.username" class="leaderboard-row"
+                        :class="{ 'is-me': user.username === currentUser, 'top-3': index < 3 }">
+
+                        <!-- Rank -->
+                        <div class="lb-rank">
+                            <span v-if="index === 0" class="rank-medal">🥇</span>
+                            <span v-else-if="index === 1" class="rank-medal">🥈</span>
+                            <span v-else-if="index === 2" class="rank-medal">🥉</span>
+                            <span v-else class="rank-number">#{{ index + 1 }}</span>
+                        </div>
+
+                        <!-- Avatar + Name -->
+                        <div class="lb-user">
+                            <div class="lb-avatar"
+                                :class="{ 'avatar-gold': index === 0, 'avatar-silver': index === 1, 'avatar-bronze': index === 2 }">
+                                {{ user.username.charAt(0).toUpperCase() }}
+                            </div>
+                            <div class="lb-name">
+                                {{ user.username }}
+                                <span v-if="user.username === currentUser" class="lb-you">(You)</span>
+                            </div>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="lb-stats">
+                            <div class="lb-stat">
+                                <span class="lb-stat-value">{{ user.totalReps }}</span>
+                                <span class="lb-stat-label">Reps</span>
+                            </div>
+                            <div class="lb-stat">
+                                <span class="lb-stat-value">{{ user.totalWorkouts }}</span>
+                                <span class="lb-stat-label">Workouts</span>
+                            </div>
+                            <div class="lb-stat">
+                                <span class="lb-stat-value">{{ user.streak }}🔥</span>
+                                <span class="lb-stat-label">Streak</span>
+                            </div>
+                            <div class="lb-stat">
+                                <span class="lb-stat-value">{{ user.milestonesUnlocked }}/{{ user.totalMilestones
+                                    }}</span>
+                                <span class="lb-stat-label">Milestones</span>
+                            </div>
+                        </div>
+
+                        <!-- Score -->
+                        <div class="lb-score">
+                            <span class="lb-score-value">{{ user.score }}</span>
+                            <span class="lb-score-label">Score</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- EXERCISE PAGE                                 -->
+        <!-- ============================================ -->
+        <div v-if="currentPage === 'exercise'" class="exercise-page">
+            <!-- Exercise Header -->
+            <div class="exercise-header">
+                <button @click="goBackToDashboard" class="back-btn" id="back-btn">← Back</button>
+                <h2>{{ currentExerciseData?.icon }} {{ currentExerciseData?.name }}</h2>
+                <span class="exercise-timer">{{ formatDuration(sessionDuration) }}</span>
+            </div>
+
+            <!-- Instruction -->
+            <p class="exercise-instruction">{{ currentExerciseData?.instruction }}</p>
+
+            <!-- Camera Container -->
+            <div class="camera-container">
+                <video id="webcam" ref="videoEl" autoplay playsinline></video>
+                <canvas id="output-canvas" ref="canvasEl" width="1280" height="720"></canvas>
+
+                <div v-if="isLoading" class="loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <p>Starting camera...</p>
+                </div>
+
+                <!-- Feedback Overlay -->
+                <div class="feedback-overlay">
+                    <div class="overlay-stat">
+                        <div class="overlay-value">{{ repCounter }}</div>
+                        <div class="overlay-label">{{ currentExerciseData?.type === 'timer' ? 'SECONDS' : 'REPS' }}
+                        </div>
+                    </div>
+
+                    <div v-show="feedbackMessage" class="overlay-feedback">
+                        {{ feedbackMessage }}
+                    </div>
+
+                    <div class="overlay-stat">
+                        <div class="overlay-value">{{ stage }}</div>
+                        <div class="overlay-label">STAGE</div>
+                    </div>
+                </div>
+
+                <!-- Extra Data (for analysis modes) -->
+                <div v-if="extraData" class="extra-data-overlay">
+                    <div v-if="extraData.label">{{ extraData.label }}</div>
+                    <div v-if="extraData.pose">Detected: {{ extraData.pose }}</div>
+                    <div v-if="extraData.score !== undefined">Score: {{ extraData.score }}/100</div>
+                    <div v-if="extraData.smoothness !== undefined">Smoothness: {{ extraData.smoothness }}%</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script type="module" src="main.js"></script>
+    <script type="module" src="/main.js"></script>
 </body>
 
 </html>
