@@ -44,6 +44,20 @@ export function usePoseLogic() {
   const feedbackMessage = ref(null);
   const extraData = ref(null); // For analysis modes (angles, scores, etc.)
 
+  // --- ML Model State ---
+  const bicepModel = ref(null);
+  const bicepScaler = ref(null);
+  
+  if (typeof tf !== 'undefined') {
+    tf.loadLayersModel('/model/bicep_curl/model.json').then(model => {
+      bicepModel.value = model;
+    }).catch(e => console.error("Error loading TF model:", e));
+    fetch('/model/bicep_curl/scaler_params.json')
+      .then(res => res.json())
+      .then(data => { bicepScaler.value = data; })
+      .catch(e => console.error("Error loading TF scaler:", e));
+  }
+
   // --- Internal state for multi-phase exercises ---
   let _lastKneePhase = null; // for high knees alternation
   let _burpeePhase = 'STANDING';
@@ -106,17 +120,62 @@ export function usePoseLogic() {
   // =====================================================
   function processBicepCurl(landmarks) {
     if (!landmarks) return;
-    if (!landmarksVisible(landmarks, [11, 13, 15, 23])) {
-      showFeedback("Show left side clearly!");
+    
+    // Choose the more visible arm
+    const l_vis = landmarks[13] ? landmarks[13].visibility : 0;
+    const r_vis = landmarks[14] ? landmarks[14].visibility : 0;
+    const useLeft = l_vis >= r_vis;
+    
+    const idx = useLeft ? { sh: 11, el: 13, wr: 15, hip: 23 } : { sh: 12, el: 14, wr: 16, hip: 24 };
+    
+    if (!landmarksVisible(landmarks, [idx.sh, idx.el, idx.wr, idx.hip])) {
+      showFeedback(`Show ${useLeft ? 'left' : 'right'} side clearly!`);
       return;
     }
 
-    const elbowAngle = calculateAngle(landmarks[11], landmarks[13], landmarks[15]);
-    const elbowHipDistance = Math.abs(landmarks[13].x - landmarks[23].x);
+    const sh = landmarks[idx.sh];
+    const el = landmarks[idx.el];
+    const wr = landmarks[idx.wr];
+    const hip = landmarks[idx.hip];
 
+    const elbowAngle = calculateAngle(sh, el, wr);
     let safetyFeedback = [];
-    if (elbowHipDistance > 0.1) safetyFeedback.push("KEEP ELBOW AT SIDE!");
 
+    // --- ML Inference for Form Quality ---
+    if (bicepModel.value && bicepScaler.value) {
+        const elbowHipDistance = Math.abs(el.x - hip.x);
+        const wristAboveShoulder = sh.y - wr.y;
+        const shoulderAngle = calculateAngle(hip, sh, el);
+        const wristElbowX = Math.abs(wr.x - el.x);
+        const elbowRise = sh.y - el.y;
+        const torsoLean = Math.abs(sh.x - hip.x);
+
+        const features = [
+            elbowAngle, elbowHipDistance, wristAboveShoulder, 
+            shoulderAngle, wristElbowX, elbowRise, torsoLean, el.visibility
+        ];
+        
+        // Scale and predict
+        const scaled = features.map((v, i) => (v - bicepScaler.value.mean[i]) / bicepScaler.value.scale[i]);
+        const tensor = tf.tensor2d([scaled]);
+        const pred = bicepModel.value.predict(tensor).dataSync()[0];
+        tensor.dispose();
+
+        // 0.4 threshold for bad form
+        if (pred < 0.4) {
+            safetyFeedback.push("BAD FORM! Keep elbow locked and steady.");
+            extraData.value = { score: Math.round(pred * 100), label: "Bad Form" };
+        } else {
+            extraData.value = { score: Math.round(pred * 100), label: "Good Form" };
+        }
+    } else {
+        // Fallback rule-based
+        const elbowHipDistance = Math.abs(el.x - hip.x);
+        if (elbowHipDistance > 0.1) safetyFeedback.push("KEEP ELBOW AT SIDE!");
+        extraData.value = null;
+    }
+
+    // --- Rep Counting Logic ---
     const curlUp = elbowAngle < 40;
     const curlDown = elbowAngle > 160;
 
